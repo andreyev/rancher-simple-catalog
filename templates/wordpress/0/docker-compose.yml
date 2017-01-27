@@ -1,11 +1,18 @@
-wordpress:
-  image: wordpress
-  links:
+version: '2'
+services:
+  wordpress:
+    image: wordpress
+    labels:
+      traefik.domain: sandboxinfra.com.br
+      traefik.port: '8080'
+      traefik.enable: 'true'
+      io.rancher.container.hostname_override: container_name
+    tty: true
+    links:
     - db:mysql
-  ports:
+    ports:
     - ${public_port}:80
-
-db:
-  image: mariadb
-  environment:
-    MYSQL_ROOT_PASSWORD: example
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: example

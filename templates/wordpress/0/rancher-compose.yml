@@ -4,7 +4,7 @@
   description: "Blog tool, publishing platform and CMS"
   uuid: Wordpress-0
   minimum_rancher_version: v0.51.0
-  questions:    
+  questions:
     - variable: public_port
       description: "public port to access the wordpress site"
       label: "Public Port"
@@ -13,4 +13,20 @@
       type: "int"
 
 
-wordpress:
+version: '2'
+services:
+  wordpress:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 80
+      interval: 2000
+      initializing_timeout: 60000
+      unhealthy_threshold: 0
+      strategy: recreate
+      response_timeout: 2000
+      request_line: GET "/" "HTTP/1.0"
+      healthy_threshold: 1
+  db:
+    scale: 1
+    start_on_create: true
